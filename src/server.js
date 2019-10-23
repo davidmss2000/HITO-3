@@ -27,7 +27,7 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
-app.P
+//app.P
 
 // simplest route
 app.get('/', (req, res) => res.json({"Hello":"World"}));
