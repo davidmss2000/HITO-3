@@ -105,3 +105,32 @@ exports.update = (req, res) => {
         return;
     });
 };
+
+exports.delete = (req, res) => {
+
+    User.findOne({_id : req.params.userId}).exec().then(obj => {
+        if(obj==null){
+            // Doesn't exist
+            res.status(400).send({message : "That user doesn't exists"});
+            return;
+        }else{
+            // Check password
+            if (obj.password != req.body.password){
+                // Wrong password
+                res.status(200).send({message : "Wrong password"});
+                return;
+            }
+            else{
+                // Password match, delete user
+                User.deleteOne({_id : req.params.userId}).exec().then(response=>{
+                    res.status(200).send({message : "User deleted successfully"});
+                    return;
+                });
+            }
+            
+        }
+    }).catch(err=>{
+        res.status(400).send({message : err || "That user doesn't exists"});
+        return;
+    });
+};
