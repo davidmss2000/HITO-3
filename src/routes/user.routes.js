@@ -8,7 +8,7 @@ module.exports = (app) => {
     app.get('/user/:userId', user.getUserInfo);
 
     // Update an existing user with userId and password
-    //app.put('/user/:userId', user.update);
+    app.put('/user/:userId', user.update);
 
     // Delete an existing user with userId and password
     //app.delete('/user/:userId', user.delete);

@@ -33,7 +33,7 @@ exports.create = (req, res) => {
                 surname: req.body.surname || "",
                 email: req.body.email,
                 password: req.body.password,
-                phoneNumber: req.body.phoneNumber || 1,
+                phoneNumber: req.body.phoneNumber || "",
                 registerDate : Date.now()
             });
 
@@ -49,7 +49,7 @@ exports.create = (req, res) => {
 
 exports.getUserInfo = (req, res) => {
 
-    var result = User.findById(req.params.userId).then(obj => {
+    User.findOne({_id : req.params.userId}).exec().then(obj => {
         if(obj==null){
             // Doesn't exist
             res.status(400).send({message : "That user doesn't exists"});
@@ -59,5 +59,49 @@ exports.getUserInfo = (req, res) => {
             res.status(200).send({name:obj.name, email:obj.email, registerDate:obj.registerDate});
             return;
         }
+    }).catch(err=>{
+        res.status(400).send({message : "That user doesn't exists"});
+        return;
+    });
+};
+
+exports.update = (req, res) => {
+
+    User.findOne({_id : req.params.userId}).exec().then(obj => {
+        if(obj==null){
+            // Doesn't exist
+            res.status(400).send({message : "That user doesn't exists"});
+            return;
+        }else{
+            // Check password
+            if (obj.password != req.body.password){
+                // Wrong password
+                res.status(200).send({message : "Wrong password"});
+                return;
+            }
+            else{
+                // Password match
+
+                // Create the updated User
+                var user = {
+                    name: req.body.name || obj.name, 
+                    surname: req.body.surname || obj.surname,
+                    email: req.body.email || obj.email,
+                    password: obj.password,
+                    phoneNumber: req.body.phoneNumber || obj.phoneNumber,
+                    registerDate : obj.registerDate
+                };
+
+                // Update user
+                User.updateOne({_id : req.params.userId}, user).exec().then(response=>{
+                    res.status(200).send({message : "User updated successfully"});
+                    return;
+                });
+            }
+            
+        }
+    }).catch(err=>{
+        res.status(400).send({message : err || "That user doesn't exists"});
+        return;
     });
 };

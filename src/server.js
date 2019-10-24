@@ -27,9 +27,7 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
-//app.P
-
-// simplest route
+// Simplest route
 app.get('/', (req, res) => res.json({"Hello":"World"}));
 
 require('./routes/user.routes.js')(app);
