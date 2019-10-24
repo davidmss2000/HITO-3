@@ -2,7 +2,6 @@ const User = require('../models/user.model.js');
 
 exports.create = (req, res) => {
 
-    var somethingWentWrong = false;
     // Validate request
     if(!req.body.email) {
         // Empty email
@@ -50,12 +49,15 @@ exports.create = (req, res) => {
 
 exports.getUserInfo = (req, res) => {
 
-    var result = User.findById(req.params.userId).then(test => {
-        console.log(test);
+    var result = User.findById(req.params.userId).then(obj => {
+        if(obj==null){
+            // Doesn't exist
+            res.status(400).send({message : "That user doesn't exists"});
+            return;
+        }else{
+            // Send name email and registration date
+            res.status(200).send({name:obj.name, email:obj.email, registerDate:obj.registerDate});
+            return;
+        }
     });
-
-    res.status = 400;
-    res.message = "va mal";
-
-    res.send();
 };

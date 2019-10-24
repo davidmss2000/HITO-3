@@ -5,7 +5,7 @@ module.exports = (app) => {
     app.post('/register', user.create);
 
     // Retrieve some information about any user with userId
-    //app.get('/user/:userId', user.getUserInfo);
+    app.get('/user/:userId', user.getUserInfo);
 
     // Update an existing user with userId and password
     //app.put('/user/:userId', user.update);
