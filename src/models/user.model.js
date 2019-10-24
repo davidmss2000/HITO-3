@@ -11,7 +11,7 @@ const UserSchema = mongoose.Schema({
         type: String,
         required : true
     },
-    phoneNumber: Number,
+    phoneNumber: String,
     registerDate: Date
 });
 
