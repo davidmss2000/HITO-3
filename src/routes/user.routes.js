@@ -1,15 +1,18 @@
-module.exports = (app) => {
-    const user = require('../controllers/user.controller.js');
+const express = require('express');
+const user = require('../controllers/user.controller');
 
-    // Create a new user if the email doesn't already exist
-    app.post('/register', user.create);
+const router = express.Router();
 
-    // Retrieve some information about any user with userId
-    app.get('/user/:userId', user.getUserInfo);
+// Create a new user if the email doesn't already exist
+router.post('/', user.create);
 
-    // Update an existing user with userId and password
-    app.put('/user/:userId', user.update);
+// Retrieve some information about any user with userId
+router.get('/:userId', user.getInfoById);
 
-    // Delete an existing user with userId and password
-    app.delete('/user/:userId', user.delete);
-}
+// Update an existing user with userId and password
+router.put('/:userId', user.updateById);
+
+// Delete an existing user with userId and password
+router.delete('/:userId', user.deleteById);
+
+module.exports = router;
